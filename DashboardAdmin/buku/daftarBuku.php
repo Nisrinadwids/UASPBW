@@ -1,6 +1,6 @@
 <?php
 require "../../config/config.php";
-$buku = queryReadData("SELECT * FROM buku");
+$buku = queryReadData("SELECT * FROM buku"); //buat narik data buku dari database
 
 // mengaktifkan tombol search engine
 if(isset($_POST["search"]) ) {
@@ -19,8 +19,15 @@ if(isset($_POST["search"]) ) {
     <script src="https://kit.fontawesome.com/de8de52639.js" crossorigin="anonymous"></script>
     <title>Kelola buku || Admin</title>
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
         body {
             background-color: #f8f9fa; /* Warna latar belakang body */
+            flex: 1 0 auto;
         }
         .navbar {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Efek bayangan navbar */
@@ -76,9 +83,10 @@ if(isset($_POST["search"]) ) {
             padding: 1rem 0;
             text-align: center;
             border-top: 1px solid #dee2e6;
-            position: fixed; /* Jika ingin footer tetap di bawah */
-            bottom: 0; /* Jika ingin footer tetap di bawah */
-            width: 100%; /* Jika ingin footer tetap di bawah */
+            position: static;
+            bottom: auto;
+            width: 100%;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -104,7 +112,7 @@ if(isset($_POST["search"]) ) {
         </div>
     </nav>
 
-    <div class="container-fluid p-4">
+    <main class="container-fluid p-4" style="flex-grow: 1;">
         <div class="search-form">
             <form action="" method="post" class="d-flex justify-content-end mb-3">
                 <div class="input-group">
@@ -134,7 +142,7 @@ if(isset($_POST["search"]) ) {
             </div>
             <?php endforeach; ?>
         </div>
-    </div>
+    </main>
 
     <footer class="footer bg-light">
         <div class="container-fluid d-flex justify-content-between align-items-center">
