@@ -1,6 +1,14 @@
 <?php 
 require "../../config/config.php"; 
-$dataDenda = queryReadData("SELECT pengembalian.id_pengembalian, pengembalian.id_buku, buku.judul, pengembalian.nisn, member.nama, member.jurusan, admin.nama_admin, pengembalian.buku_kembali, pengembalian.keterlambatan, pengembalian.denda
+// Konfirmasi pelunasan denda
+if (isset($_GET['lunas'])) {
+    $id = $_GET['lunas'];
+    $query = "UPDATE pengembalian SET status_denda = 'Lunas' WHERE id_pengembalian = $id";
+    mysqli_query($connection, $query);
+    header("Location: daftarDenda.php");
+    exit;
+}
+$dataDenda = mysqli_query($connection, "SELECT pengembalian.id_pengembalian, pengembalian.id_buku, buku.judul, pengembalian.nisn, member.nama, member.jurusan, admin.nama_admin, pengembalian.buku_kembali, pengembalian.keterlambatan, pengembalian.denda, pengembalian.status_denda
 FROM pengembalian
 INNER JOIN buku ON pengembalian.id_buku = buku.id_buku
 INNER JOIN member ON pengembalian.nisn = member.nisn
@@ -28,48 +36,59 @@ INNER JOIN admin ON pengembalian.id_admin = admin.id
       </div>
     </nav>
     
-    <div class="p-4 mt-5">
-      <div class="mt-5">
-        <caption>List of denda</caption>
-          <div class="table-responsive mt-3">
-    <table class="table table-striped table-hover">
-      <thead class="text-center">
-      <tr>
-        <th class="bg-primary text-light">id buku</th>
-        <th class="bg-primary text-light">Judul buku</th>
-        <th class="bg-primary text-light">Nisn</th>
-        <th class="bg-primary text-light">Nama siswa</th>
-        <th class="bg-primary text-light">Jurusan</th>
-        <th class="bg-primary text-light">Nama admin</th>
-        <th class="bg-primary text-light">Hari pengembalian</th>
-        <th class="bg-primary text-light">Keterlambatan</th>
-        <th class="bg-primary text-light">Denda</th>
-        <th class="bg-primary text-light">Status Bayar</th>
-      </tr>
-      </thead>
-        <?php foreach ($dataDenda as $item) : ?>
-      <tr>
-        <td><?= $item["id_buku"]; ?></td>
-        <td><?= $item["judul"]; ?></td>
-        <td><?= $item["nisn"]; ?></td>
-        <td><?= $item["nama"]; ?></td>
-        <td><?= $item["jurusan"]; ?></td>
-        <td><?= $item["nama_admin"]; ?></td>
-        <td><?= $item["buku_kembali"]; ?></td>
-        <td><?= $item["keterlambatan"]; ?></td>
-        <td><?= $item["denda"]; ?></td>
-        <td>
-          <?php if ($item["denda"] > 0) : ?>
-            Belum Lunas
-          <?php else : ?>
-            Lunas
-          <?php endif; ?>
-        </td>
-      </tr>
-        <?php endforeach; ?>
-    </table>
+
+    <div class="container-fluid p-4 mt-5" style="max-width: 95%;">
+    <h4 class="mt-5">List Of Denda</h4>
+    <div class="table-responsive mt-5">
+      <table class="table table-striped table-hover">
+        <thead class="text-center">
+          <tr>
+           <th class="bg-primary text-light">id buku</th>
+           <th class="bg-primary text-light">Judul buku</th>
+           <th class="bg-primary text-light">NISN</th> 
+           <th class="bg-primary text-light">Nama </th> 
+           <th class="bg-primary text-light">Jurusan</th>
+           <th class="bg-primary text-light">Nama admin</th>
+           <th class="bg-primary text-light">Tanggal pengembalian</th> 
+           <th class="bg-primary text-light">Keterlambatan</th>
+           <th class="bg-primary text-light">Denda</th>
+           <th class="bg-primary text-light">Status</th>
+           <th class="bg-primary text-light">Konfirmasi</th>
+         </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($dataDenda as $item) : ?>
+          <tr>
+            <td><?= $item["id_buku"]; ?></td>
+            <td><?= $item["judul"]; ?></td>
+            <td><?= $item["nisn"]; ?></td>
+            <td><?= $item["nama"]; ?></td>
+            <td><?= $item["jurusan"]; ?></td>
+            <td><?= $item["nama_admin"]; ?></td>
+            <td><?= $item["buku_kembali"]; ?></td>
+            <td><?= $item["keterlambatan"]; ?> hari</td>
+            <td>Rp<?= number_format($item["denda"], 0, ',', '.'); ?></td>
+            <td>
+              <span class="badge <?= $item["status_denda"] === "Lunas" ? 'bg-success' : 'bg-warning text-dark'; ?>">
+                <?= $item["status_denda"]; ?>
+              </span>
+            </td>
+            <td>
+              <?php if ($item["status_denda"] !== "Lunas") : ?>
+                <a href="?lunas=<?= $item["id_pengembalian"]; ?>" class="btn btn-sm btn-success" onclick="return confirm('Konfirmasi pembayaran denda ini?')">
+                  Tandai Lunas
+                </a>
+              <?php else : ?>
+                <button class="btn btn-sm btn-secondary" disabled>Lunas</button>
+              <?php endif; ?>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+
     </div>
-   </div>
+  </div>
   </div>
   
   <footer class="fixed-bottom shadow-lg bg-subtle p-3">
