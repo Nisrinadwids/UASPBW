@@ -13,7 +13,7 @@ FROM pengembalian
 INNER JOIN buku ON pengembalian.id_buku = buku.id_buku
 INNER JOIN member ON pengembalian.nisn = member.nisn
 INNER JOIN admin ON pengembalian.id_admin = admin.id
-WHERE pengembalian.denda > 0");
+");
 ?>
 
 <!DOCTYPE html>
@@ -36,6 +36,7 @@ WHERE pengembalian.denda > 0");
       </div>
     </nav>
     
+
     <div class="container-fluid p-4 mt-5" style="max-width: 95%;">
     <h4 class="mt-5">List Of Denda</h4>
     <div class="table-responsive mt-5">
@@ -85,6 +86,7 @@ WHERE pengembalian.denda > 0");
           <?php endforeach; ?>
         </tbody>
       </table>
+
     </div>
   </div>
   </div>
