@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 10, 2023 at 06:48 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.3.10
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 07 Jun 2025 pada 09.01
+-- Versi server: 10.4.32-MariaDB
+-- Versi PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Struktur dari tabel `admin`
 --
 
 CREATE TABLE `admin` (
@@ -33,10 +33,10 @@ CREATE TABLE `admin` (
   `password` varchar(25) NOT NULL,
   `kode_admin` varchar(12) NOT NULL,
   `no_tlp` varchar(13) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data for table `admin`
+-- Dumping data untuk tabel `admin`
 --
 
 INSERT INTO `admin` (`id`, `nama_admin`, `password`, `kode_admin`, `no_tlp`) VALUES
@@ -46,7 +46,7 @@ INSERT INTO `admin` (`id`, `nama_admin`, `password`, `kode_admin`, `no_tlp`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `buku`
+-- Struktur dari tabel `buku`
 --
 
 CREATE TABLE `buku` (
@@ -59,10 +59,10 @@ CREATE TABLE `buku` (
   `tahun_terbit` date NOT NULL,
   `jumlah_halaman` int(11) NOT NULL,
   `buku_deskripsi` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data for table `buku`
+-- Dumping data untuk tabel `buku`
 --
 
 INSERT INTO `buku` (`cover`, `id_buku`, `kategori`, `judul`, `pengarang`, `penerbit`, `tahun_terbit`, `jumlah_halaman`, `buku_deskripsi`) VALUES
@@ -86,15 +86,15 @@ INSERT INTO `buku` (`cover`, `id_buku`, `kategori`, `judul`, `pengarang`, `pener
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategori_buku`
+-- Struktur dari tabel `kategori_buku`
 --
 
 CREATE TABLE `kategori_buku` (
   `kategori` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data for table `kategori_buku`
+-- Dumping data untuk tabel `kategori_buku`
 --
 
 INSERT INTO `kategori_buku` (`kategori`) VALUES
@@ -107,7 +107,7 @@ INSERT INTO `kategori_buku` (`kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `member`
+-- Struktur dari tabel `member`
 --
 
 CREATE TABLE `member` (
@@ -120,19 +120,22 @@ CREATE TABLE `member` (
   `jurusan` varchar(50) NOT NULL,
   `no_tlp` varchar(15) NOT NULL,
   `tgl_pendaftaran` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data for table `member`
+-- Dumping data untuk tabel `member`
 --
 
 INSERT INTO `member` (`nisn`, `kode_member`, `nama`, `password`, `jenis_kelamin`, `kelas`, `jurusan`, `no_tlp`, `tgl_pendaftaran`) VALUES
-(202301, 'mem01', 'mangandaralam sakti ', '$2y$10$U53PbfrWXwvMiZ42WzdyfuRLyNKAAxecgPC7ZC..4pxGA8NtlrqBS', 'Laki laki', 'XI', 'Rekayasa Perangkat Lunak', '081383877025', '2023-10-22');
+(123, 'member10', 'rizka ', '$2y$10$sDDWRx4TP71xrn5kPNMHBuc.1WSSZe1RDT/buhKjlgbaSqW77EfbC', 'Perempuan', 'XII', 'Desain Komunikasi Visual', '0765432', '2025-06-07'),
+(123456, 'member4', 'rizka', '$2y$10$tHQEEq1jFOTwXefOUXpwHu8VXhZGvmGWyj5GjS0/1v4o4hcciNuA2', 'Perempuan', 'XII', 'Desain Komunikasi Visual', '123456', '2025-06-03'),
+(202301, 'mem01', 'mangandaralam sakti ', '$2y$10$U53PbfrWXwvMiZ42WzdyfuRLyNKAAxecgPC7ZC..4pxGA8NtlrqBS', 'Laki laki', 'XI', 'Rekayasa Perangkat Lunak', '081383877025', '2023-10-22'),
+(2147483647, 'member1', 'rizka amaniah', '$2y$10$B2Qo46Uh4jvWjxjY5FYI8eJXoam6Wlj9MTqNZRHrzbhMgEbWAy6Ue', 'Perempuan', 'XIII', 'Desain Komunikasi Visual', '08453423145', '2025-05-23');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `peminjaman`
+-- Struktur dari tabel `peminjaman`
 --
 
 CREATE TABLE `peminjaman` (
@@ -142,12 +145,12 @@ CREATE TABLE `peminjaman` (
   `id_admin` int(11) NOT NULL,
   `tgl_peminjaman` date NOT NULL,
   `tgl_pengembalian` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pengembalian`
+-- Struktur dari tabel `pengembalian`
 --
 
 CREATE TABLE `pengembalian` (
@@ -158,42 +161,52 @@ CREATE TABLE `pengembalian` (
   `id_admin` int(11) NOT NULL,
   `buku_kembali` date NOT NULL,
   `keterlambatan` enum('YA','TIDAK') NOT NULL,
-  `denda` int(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `denda` int(15) NOT NULL,
+  `status_denda` enum('Belum Lunas','Lunas') DEFAULT 'Belum Lunas'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `pengembalian`
+--
+
+INSERT INTO `pengembalian` (`id_pengembalian`, `id_peminjaman`, `id_buku`, `nisn`, `id_admin`, `buku_kembali`, `keterlambatan`, `denda`, `status_denda`) VALUES
+(61, 0, 'bis01', 202301, 1, '2025-06-06', '', 4000, 'Lunas'),
+(62, 0, 'nov01', 202301, 1, '2025-06-06', '', 4000, 'Belum Lunas'),
+(63, 0, 'nov01', 123, 1, '2025-06-06', '', 4000, 'Belum Lunas');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `admin`
+-- Indeks untuk tabel `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `kode_admin` (`kode_admin`);
 
 --
--- Indexes for table `buku`
+-- Indeks untuk tabel `buku`
 --
 ALTER TABLE `buku`
   ADD PRIMARY KEY (`id_buku`),
   ADD KEY `kategori` (`kategori`);
 
 --
--- Indexes for table `kategori_buku`
+-- Indeks untuk tabel `kategori_buku`
 --
 ALTER TABLE `kategori_buku`
   ADD PRIMARY KEY (`kategori`);
 
 --
--- Indexes for table `member`
+-- Indeks untuk tabel `member`
 --
 ALTER TABLE `member`
   ADD PRIMARY KEY (`nisn`),
   ADD UNIQUE KEY `kode_member` (`kode_member`);
 
 --
--- Indexes for table `peminjaman`
+-- Indeks untuk tabel `peminjaman`
 --
 ALTER TABLE `peminjaman`
   ADD PRIMARY KEY (`id_peminjaman`),
@@ -202,7 +215,7 @@ ALTER TABLE `peminjaman`
   ADD KEY `id_admin` (`id_admin`);
 
 --
--- Indexes for table `pengembalian`
+-- Indeks untuk tabel `pengembalian`
 --
 ALTER TABLE `pengembalian`
   ADD PRIMARY KEY (`id_pengembalian`),
@@ -212,39 +225,39 @@ ALTER TABLE `pengembalian`
   ADD KEY `id_admin` (`id_admin`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `peminjaman`
+-- AUTO_INCREMENT untuk tabel `peminjaman`
 --
 ALTER TABLE `peminjaman`
   MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
--- AUTO_INCREMENT for table `pengembalian`
+-- AUTO_INCREMENT untuk tabel `pengembalian`
 --
 ALTER TABLE `pengembalian`
-  MODIFY `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `buku`
+-- Ketidakleluasaan untuk tabel `buku`
 --
 ALTER TABLE `buku`
   ADD CONSTRAINT `buku_ibfk_1` FOREIGN KEY (`kategori`) REFERENCES `kategori_buku` (`kategori`);
 
 --
--- Constraints for table `peminjaman`
+-- Ketidakleluasaan untuk tabel `peminjaman`
 --
 ALTER TABLE `peminjaman`
   ADD CONSTRAINT `peminjaman_ibfk_1` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id_buku`),
@@ -252,7 +265,7 @@ ALTER TABLE `peminjaman`
   ADD CONSTRAINT `peminjaman_ibfk_3` FOREIGN KEY (`id_admin`) REFERENCES `admin` (`id`);
 
 --
--- Constraints for table `pengembalian`
+-- Ketidakleluasaan untuk tabel `pengembalian`
 --
 ALTER TABLE `pengembalian`
   ADD CONSTRAINT `pengembalian_ibfk_2` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id_buku`),
