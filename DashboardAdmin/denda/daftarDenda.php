@@ -5,7 +5,7 @@ FROM pengembalian
 INNER JOIN buku ON pengembalian.id_buku = buku.id_buku
 INNER JOIN member ON pengembalian.nisn = member.nisn
 INNER JOIN admin ON pengembalian.id_admin = admin.id
-WHERE pengembalian.denda > 0");
+");
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +44,7 @@ WHERE pengembalian.denda > 0");
         <th class="bg-primary text-light">Hari pengembalian</th>
         <th class="bg-primary text-light">Keterlambatan</th>
         <th class="bg-primary text-light">Denda</th>
+        <th class="bg-primary text-light">Status Bayar</th>
       </tr>
       </thead>
         <?php foreach ($dataDenda as $item) : ?>
@@ -57,6 +58,13 @@ WHERE pengembalian.denda > 0");
         <td><?= $item["buku_kembali"]; ?></td>
         <td><?= $item["keterlambatan"]; ?></td>
         <td><?= $item["denda"]; ?></td>
+        <td>
+          <?php if ($item["denda"] > 0) : ?>
+            Belum Lunas
+          <?php else : ?>
+            Lunas
+          <?php endif; ?>
+        </td>
       </tr>
         <?php endforeach; ?>
     </table>
